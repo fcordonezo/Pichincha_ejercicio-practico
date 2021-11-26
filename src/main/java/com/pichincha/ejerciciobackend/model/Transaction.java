@@ -13,25 +13,63 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import lombok.Getter;
-import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 @Entity(name = "Transactions")
 public class Transaction {
 	
 	@Id
-	@Getter
 	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Getter @Setter
-	@Column(name = "Cretaed_at")
-	@Temporal(TemporalType.DATE)
+	@Column(name = "cretaed_at")
+	@Temporal(TemporalType.TIMESTAMP)
+	@CreationTimestamp
 	private Date createdAt;
+
+	@Column(name = "amount", precision = 2, nullable = false)
+	private Float amount;
 	
-	@Getter @Setter
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_person")
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "id_account", nullable = false)
+	@JsonBackReference
 	private Account account;
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+
+	public Float getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Float amount) {
+		this.amount = amount;
+	}
+	
+	
 }
