@@ -1,9 +1,13 @@
 package com.pichincha.ejerciciobackend.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
-import org.assertj.core.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,7 +25,7 @@ public class PersonServiceTest {
 	private PersonRepository personRepository;
 	
 	@InjectMocks
-	private PersonService personService;
+	private PersonServiceImpl personService;
 	
 	private Person person;
 	
@@ -37,8 +41,25 @@ public class PersonServiceTest {
 	}
 	
 	@Test
-	void getAllById(Integer id) {
-		when(personRepository.findById(id));
+	void getById() {
+		when(personRepository.findById(1)).thenReturn(Optional.of(person));
+		assertNotNull(personService.getById(1));
+		assertEquals(personService.getById(1), person);
+	}
+	
+	@Test
+	void getAll() {
+		List<Person> personList = new ArrayList<>();
+		personList.add(person);
+		when(personRepository.findAll()).thenReturn(personList);
 		assertNotNull(personService.getAll());
 	}
+	
+	@Test
+	void getByPersonalId() {
+		when(personRepository.findByPersonalId("1234")).thenReturn(Optional.of(person));
+		assertNotNull(personService.getByPersonalId("1234"));
+		assertEquals(personService.getByPersonalId("1234"), person);
+	}
+	
 }
