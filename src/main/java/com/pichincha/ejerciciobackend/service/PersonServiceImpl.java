@@ -15,7 +15,7 @@ import com.pichincha.ejerciciobackend.repository.PersonRepository;
 public class PersonServiceImpl implements PersonService {
 
 	@Autowired
-	PersonRepository personRepository;
+	private PersonRepository personRepository;
 	
 	@Override
 	public Person getById(Integer id) {
